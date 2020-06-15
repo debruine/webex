@@ -1,17 +1,22 @@
 Package: webex
-Title: Web exercises for student self-assessment
-Version: 0.0.0.9200
-Authors@R: c(
-  person("Dale", "Barr", email = "dale.barr@glasgow.ac.uk", role = c("aut", "cre")),
-  person("Lisa", "DeBruine", email = "lisa.debruine@glasgow.ac.uk", role = "aut")
-  )
-Description: Functions for easily creating interactive web pages using RMarkdown that students can use in self-assessment.
+Version: 0.9.1.9100
+Date: 2019-04-25
+Title: Create Interactive Web Exercises in 'R Markdown'
+Description: Functions for easily creating interactive web pages using
+    'R Markdown' that students can use in self-guided learning.
+Authors@R: c(person("Dale", "Barr", email = "dalejbarr@protonmail.com",
+  role = c("aut", "cre")),
+  person("Lisa", "DeBruine", email = "lisa.debruine@glasgow.ac.uk",
+  role = "aut"))
+URL: https://github.com/psyteachr/webex
 Depends: R (>= 3.1.2)
 Imports:
     jsonlite,
-    rmarkdown
-License: MIT + file LICENSE
+    rmarkdown,
+    knitr
+License: CC BY-SA 4.0
 LazyData: true
 RoxygenNote: 6.1.1
 Suggests: 
     testthat
+Encoding: UTF-8

@@ -7,8 +7,27 @@
 webex_default(...)
 }
 \arguments{
-\item{...}{Additional function arguments to pass to html_document}
+\item{...}{Additional function arguments to pass to \code{\link[rmarkdown]{html_document}}.}
 }
 \description{
 This function wraps \code{rmarkdown::html_document} to configure compilation to embed the default webex CSS and JavaScript files in the resulting HTML.
+}
+\details{
+Call this function as the \code{output_format} argument for the \code{\link[rmarkdown]{render}} function when compiling HTML documents from RMarkdown source.
+}
+\examples{
+# copy the webex 'R Markdown' template to a temporary file
+\dontrun{
+my_rmd <- tempfile(fileext = ".Rmd")
+rmarkdown::draft(my_rmd, "webex", "webex")
+
+# compile it
+rmarkdown::render(my_rmd, webex::webex_default())
+
+# view the result
+browseURL(sub("\\\\.Rmd$", ".html", my_rmd))
+}
+}
+\seealso{
+\code{\link[rmarkdown]{render}}, \code{\link[rmarkdown]{html_document}}
 }
