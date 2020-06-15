@@ -16,7 +16,7 @@ Imports:
     knitr
 License: CC BY-SA 4.0
 LazyData: true
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.0
 Suggests: 
     testthat
 Encoding: UTF-8

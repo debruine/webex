@@ -7,6 +7,7 @@
 #' @param ignore_case Whether to ignore case (capitalization).
 #' @param ignore_ws Whether to ignore whitespace.
 #' @param regex Whether to use regex to match answers (concatenates all answers with `|` before matching).
+#' @param name The name to record if you are saving your answers with a script
 #' @details Writes html code that creates an input box widget. Call this function inline in an RMarkdown document. See the Web Exercises RMarkdown template for examples of its use in RMarkdown.
 #' @examples
 #' # What is 2 + 2?
@@ -24,7 +25,8 @@ fitb <- function(answer,
                  ignore_case = FALSE,
                  tol = NULL,
                  ignore_ws = TRUE, 
-                 regex = FALSE) {
+                 regex = FALSE,
+                 name = NULL) {
   
   
   if(!is.null(tol)){
@@ -42,7 +44,8 @@ fitb <- function(answer,
   answers <- jsonlite::toJSON(as.character(answer))
   answers <- gsub("\'", "&apos;", answers, fixed = TRUE)
   
-  paste0("<input class='solveme",
+  paste0("<input name='", make_name(name), "'", 
+         "class='solveme",
          ifelse(ignore_ws, " nospaces", ""),
          ifelse(!is.null(tol), paste0("' data-tol='", tol, ""), ""),
          ifelse(ignore_case, " ignorecase", ""),
@@ -54,6 +57,7 @@ fitb <- function(answer,
 #' Create a multiple-choice question
 #'
 #' @param opts Vector of alternatives. The correct answer is the element(s) of this vector named 'answer'. 
+#' @param name The name to record if you are saving your answers with a script
 #' @details Writes html code that creates an option box widget, with a single correct answer. Call this function inline in an RMarkdown document. See the Web Exercises RMarkdown template for further examples.
 #' @examples
 #' # How many planets orbit closer to the sun than the Earth?
@@ -62,7 +66,7 @@ fitb <- function(answer,
 #' # Which actor played Luke Skywalker in the movie Star Wars?
 #' mcq(c("Alec Guinness", answer = "Mark Hamill", "Harrison Ford"))
 #' @export
-mcq <- function(opts) {
+mcq <- function(opts, name = NULL) {
   ix <- which(names(opts) == "answer")
   if (length(ix) == 0) {
     stop("MCQ has no correct answer")
@@ -73,13 +77,15 @@ mcq <- function(opts) {
   options <- paste0(" <option>",
                     paste(c("", opts), collapse = "</option> <option>"),
                     "</option>")
-  paste0("<select class='solveme' data-answer='", answers, "'>",
+  paste0("<select class='solveme' name='", make_name(name), 
+         "' data-answer='", answers, "'>",
          options, "</select>")
 }
 
 #' Create a true-or-false question
 #'
 #' @param answer Logical value TRUE or FALSE, corresponding to the correct answer.
+#' @param name The name to record if you are saving your answers with a script
 #' @details Writes html code that creates an option box widget with TRUE or FALSE as alternatives. Call this function inline in an RMarkdown document. See the Web Exercises RMarkdown template for further examples.
 #' @examples
 #' # True or False? 2 + 2 = 4
@@ -88,13 +94,13 @@ mcq <- function(opts) {
 #' # True or False? The month of April has 31 days.
 #' torf(FALSE)
 #' @export
-torf <- function(answer) {
+torf <- function(answer, name = NULL) {
   opts <- c("TRUE", "FALSE")
   if (answer)
     names(opts) <- c("answer", "")
   else
     names(opts) <- c("", "answer")
-  mcq(opts)
+  mcq(opts, name) # just pass on name, don't call make_name
 }
 
 #' Create button revealing hidden content

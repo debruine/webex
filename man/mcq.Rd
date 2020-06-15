@@ -4,10 +4,12 @@
 \alias{mcq}
 \title{Create a multiple-choice question}
 \usage{
-mcq(opts)
+mcq(opts, name = NULL)
 }
 \arguments{
 \item{opts}{Vector of alternatives. The correct answer is the element(s) of this vector named 'answer'.}
+
+\item{name}{The name to record if you are saving your answers with a script}
 }
 \description{
 Create a multiple-choice question

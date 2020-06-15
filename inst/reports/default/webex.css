@@ -1,6 +1,9 @@
 /* styles for solveme */
 .solveme { border: 2px dotted red; }
 .solveme.correct { border: 2px solid blue; }
+form.webex_form.hide_answers .solveme,
+form.webex_form.hide_answers .solveme.correct { border: 2px solid grey; }
+
 /* styles for hidden solutions */
 .solution {
     height: 2.5em;
@@ -18,4 +21,8 @@
 }
 .solution pre.sourceCode {
     border-color: green;
+}
+
+form.webex_form.hide_answers #total_correct {
+    display: none;
 }

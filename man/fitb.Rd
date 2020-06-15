@@ -4,8 +4,16 @@
 \alias{fitb}
 \title{Create a fill-in-the-blank question}
 \usage{
-fitb(answer, width = calculated_width, num = FALSE,
-  ignore_case = FALSE, tol = NULL, ignore_ws = TRUE, regex = FALSE)
+fitb(
+  answer,
+  width = calculated_width,
+  num = FALSE,
+  ignore_case = FALSE,
+  tol = NULL,
+  ignore_ws = TRUE,
+  regex = FALSE,
+  name = NULL
+)
 }
 \arguments{
 \item{answer}{The correct answer (can be a vector if there is more than one correct answer).}
@@ -21,6 +29,8 @@ fitb(answer, width = calculated_width, num = FALSE,
 \item{ignore_ws}{Whether to ignore whitespace.}
 
 \item{regex}{Whether to use regex to match answers (concatenates all answers with `|` before matching).}
+
+\item{name}{The name to record if you are saving your answers with a script}
 }
 \description{
 Create a fill-in-the-blank question

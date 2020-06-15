@@ -1,5 +1,12 @@
 <script>
 
+/* submit form */
+$('form.webex_form').on('submit', function( event ) {
+  event.preventDefault();
+  $(this).removeClass("hide_answers");
+  console.log( $(this).serialize() );
+});
+
 /* update total correct if #total_correct exists */
 update_total_correct = function() {
   if (t = document.getElementById("total_correct")) {

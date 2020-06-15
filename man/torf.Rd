@@ -4,10 +4,12 @@
 \alias{torf}
 \title{Create a true-or-false question}
 \usage{
-torf(answer)
+torf(answer, name = NULL)
 }
 \arguments{
 \item{answer}{Logical value TRUE or FALSE, corresponding to the correct answer.}
+
+\item{name}{The name to record if you are saving your answers with a script}
 }
 \description{
 Create a true-or-false question

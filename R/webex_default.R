@@ -22,6 +22,8 @@
 webex_default <- function(...) {
   css <- system.file("reports/default/webex.css", package = "webex")
   js <- system.file("reports/default/webex.js", package = "webex")
+  
+  options(webex_names = c()) # reset form names
 
   knitr::knit_hooks$set(webex.hide = function(before, options, envir) {
     if (before) {

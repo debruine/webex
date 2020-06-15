@@ -1,0 +1,24 @@
+---
+title: "Web Forms"
+output: webex::webex_default
+---
+
+```{r setup, include = FALSE}
+  library("webex")
+```
+
+
+
+## Forms
+
+`r form_start()`
+
+- True or False? You can permute values in a vector using `sample()`. `r torf(TRUE, "t1")`
+- Type a vowel: `r fitb(c("A", "E", "I", "O" , "U"), ignore_case = TRUE, name = "vowel")`
+- True  `r torf(TRUE)`
+- False `r torf(FALSE)`
+
+`r total_correct()`
+
+`r form_end()`
+
