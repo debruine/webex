@@ -1,6 +1,6 @@
 #' Create a fill-in-the-blank question
 #'
-#' @param answer The correct answer (can be a vector if there is more than one correct answer).
+#' @param answer The correct answer (can be a vector if there is more than one correct answer). If NULL or omitted, the input will be included in submitted data, but not checked for correctness
 #' @param width Width of the input box in characters. Defaults to the length of the longest answer.
 #' @param num Whether the input is numeric, in which case allow for leading zeroes to be omitted.
 #' @param tol The tolerance within which numeric answers will be accepted; i.e. if \code{abs(response - true.answer) < tol}, the answer is correct (implies \code{num=TRUE}).
@@ -19,7 +19,7 @@
 #' # What is pi to three decimal places?
 #' fitb(pi, num = TRUE, tol = .001)
 #' @export
-fitb <- function(answer, 
+fitb <- function(answer = NULL, 
                  width = calculated_width, 
                  num = FALSE,
                  ignore_case = FALSE,
@@ -33,25 +33,29 @@ fitb <- function(answer,
     num <- TRUE
   } 
 
-  if (num) {
-    answer2 <- strip_lzero(answer)
-    answer <- union(answer, answer2)
+  if (is.null(answer)) {
+    answers <- ""
+  } else {
+    if (num) {
+      answer2 <- strip_lzero(answer)
+      answer <- union(answer, answer2)
+    }
+    
+    # if width not set, calculate it from max length answer, up to limit of 100
+    calculated_width <- min(100, max(nchar(answer)))
+    
+    answers <- jsonlite::toJSON(as.character(answer))
+    answers <- gsub("\'", "&apos;", answers, fixed = TRUE)
   }
   
-  # if width not set, calculate it from max length answer, up to limit of 100
-  calculated_width <- min(100, max(nchar(answer)))
-  
-  answers <- jsonlite::toJSON(as.character(answer))
-  answers <- gsub("\'", "&apos;", answers, fixed = TRUE)
-  
-  paste0("<input name='", make_name(name), "'", 
-         "class='solveme",
-         ifelse(ignore_ws, " nospaces", ""),
-         ifelse(!is.null(tol), paste0("' data-tol='", tol, ""), ""),
-         ifelse(ignore_case, " ignorecase", ""),
-         ifelse(regex, " regex", ""),
-         "' size='", width,
-         "' data-answer='", answers, "'/>")
+  sprintf("<input name='%s' class='%s %s %s %s' data-tol='%s' size='%s' data-answer='%s' />",
+          make_name(name),
+          ifelse(is.null(answer), "", "solveme"),
+          ifelse(ignore_ws, "nospaces", ""),
+          ifelse(ignore_case, " ignorecase", ""),
+          ifelse(regex, " regex", ""),
+          ifelse(!is.null(tol), tol, 0),
+          width, answers)
 }
 
 #' Create a multiple-choice question
@@ -143,7 +147,7 @@ checkbox <- function(..., name = NULL) {
   if (length(txt) > 1) {
     sprintf("<ul class='cb'>\n\t<li>%s</li>\n\t<button>Reveal Answers</button></ul>", paste(txt, collapse = "</li>\n\t<li>"))
   } else {
-    sprintf("<span class='cb'>%s <button>Reveal Answers</button></span>\n", txt)
+    sprintf("<span class='cb'>%s <button>Reveal Answers</button></span>", txt)
   }
 }
 
@@ -152,6 +156,7 @@ checkbox <- function(..., name = NULL) {
 #' Create button revealing hidden content
 #'
 #' @param button_text Text to appear on the button that reveals the hidden content.
+#' @param button_class An optional css class for the button. Built-in options are "red", "orange", "yellow", "green", "blue", "purple", but you can add your own css styles with a custom class.
 #' @seealso \code{unhide}
 #' @details Writes HTML to create a content that is revealed by a button press. Call this function inline in an RMarkdown document. Any content appearing after this call up to an inline call to \code{unhide()} will only be revealed when the user clicks the button. See the Web Exercises RMarkdown Template for examples.
 #' @examples
@@ -161,8 +166,10 @@ checkbox <- function(..., name = NULL) {
 #' # or the button can display custom text
 #' hide("Click here for a hint")
 #' @export
-hide <- function(button_text = "Solution") {
-  paste0("\n<div class='solution'><button>", button_text, "</button>\n")
+hide <- function(button_text = "Solution", button_class = "") {
+  sprintf("\n<div class='solution'><button class='%s'>%s</button>\n",
+          button_class,
+          button_text)
 }
 
 #' End hidden HTML content

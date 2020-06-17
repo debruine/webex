@@ -254,15 +254,31 @@ h6 {
 </style>
 
 <style type="text/css">
+:root {
+--pink: #983E82; 
+--orange: #E2A458; 
+--yellow: #F5DC70; 
+--green: #59935B; 
+--blue: #467AAC; 
+--purple: #61589C; 
+--tpink: hsla(315, 42%, 42%, .2);
+--torange: hsla( 33, 70%, 62%, .2);
+--tyellow: hsla( 49, 87%, 70%, .2);
+--tgreen: hsla(122, 25%, 46%, .2);
+--tblue: hsla(209, 42%, 47%, .2);
+--tpurple: hsla(248, 28%, 48%, .2);
+}
+
+.solveme + label { border: 2px solid rgba(0,0,0,0); padding: 0 0.25em;
+font-weight: normal;
+}
 .solveme, .reveal .solveme + label { border: 2px dotted red; }
 .solveme.correct,
 .reveal .solveme.correct + label
 { border: 2px solid blue; }
 form.webex_form.hide_answers .solveme,
-form.webex_form.hide_answers .solveme.correct,
-form.webex_form.hide_answers .solveme + label,
-form.webex_form.hide_answers .solveme.correct + label
-{ border: 2px solid grey; }
+form.webex_form.hide_answers .solveme.correct
+{ border: 2px solid rgba(0,0,0,0.2); }
 
 .solution {
 height: 2.5em;
@@ -274,9 +290,66 @@ height: auto;
 background-color: rgba(0, 0, 0, 0.1);
 border-radius: 5px;
 }
+input { outline: none; border: 2px solid rgba(0,0,0,0.2);
+min-width: 2em;
+}
+button {
+border-radius: 0.5em;
+border: 1px solid rgba(0,0,0,1);
+color: black;
+background-color: rgba(0,0,0,0.2);
+outline: none;
+}
+button:active {
+color: white;
+border-color: white;
+background-color: rgba(0,0,0,1);
+}
 .solution button {
 height: 2em;
 margin-bottom: 0.5em;
+}
+.solution button.red {
+border-color: var(--pink);
+background-color: var(--tpink);
+}
+.solution button.red:active {
+background-color: var(--pink);
+}
+.solution button.orange {
+border-color: var(--orange);
+background-color: var(--torange);
+}
+.solution button.orange:active {
+background-color: var(--orange);
+}
+.solution button.yellow {
+border-color: var(--yellow);
+background-color: var(--tyellow);
+}
+.solution button.yellow:active {
+background-color: var(--yellow);
+}
+.solution button.green {
+border-color: var(--green);
+background-color: var(--tgreen);
+}
+.solution button.green:active {
+background-color: var(--green);
+}
+.solution button.blue {
+border-color: var(--blue);
+background-color: var(--tblue);
+}
+.solution button.blue:active {
+background-color: var(--blue);
+}
+.solution button.purple {
+border-color: var(--purple);
+background-color: var(--tpurple);
+}
+.solution button.purple:active {
+background-color: var(--purple);
 }
 .solution pre.sourceCode {
 border-color: green;
@@ -404,13 +477,13 @@ summary {
 
 <div id="forms" class="section level2">
 <h2>Forms</h2>
-<form action class="webex_form hide_answers" method="post">
+<form action class="webex_form hide_answers local" method="post">
 <ul>
 <li>True or False? You can permute values in a vector using <code>sample()</code>. <select class="solveme" name="t1" data-answer="[&quot;TRUE&quot;]"> <option></option> <option>TRUE</option> <option>FALSE</option></select></li>
-<li>Type a vowel: <input name="vowel" class="solveme nospaces ignorecase" size="1" data-answer="[&quot;A&quot;,&quot;E&quot;,&quot;I&quot;,&quot;O&quot;,&quot;U&quot;]"></input></li>
+<li>Type a vowel: <input name="vowel" class="solveme nospaces  ignorecase " data-tol="0" size="1" data-answer="[&quot;A&quot;,&quot;E&quot;,&quot;I&quot;,&quot;O&quot;,&quot;U&quot;]"></input></li>
 <li>True <select class="solveme" name="q_3" data-answer="[&quot;TRUE&quot;]"> <option></option> <option>TRUE</option> <option>FALSE</option></select></li>
 <li>False <select class="solveme" name="q_4" data-answer="[&quot;FALSE&quot;]"> <option></option> <option>TRUE</option> <option>FALSE</option></select></li>
-<li><p><span class="cb"><input type="checkbox" class="solveme" id="q_5" name="q_5" data-answer="[&quot;TRUE&quot;]"> <label for="q_5">I like R</label> <button>Reveal Answers</button></span></p></li>
+<li><span class="cb"><input type="checkbox" class="solveme" id="q_5" name="q_5" data-answer="[&quot;TRUE&quot;]"> <label for="q_5">I like R</label> <button>Reveal Answers</button></span></li>
 <li>Which of the following are true?
 <ul class="cb">
 <li>
@@ -428,6 +501,19 @@ Reveal Answers
 </ul></li>
 </ul>
 <p><span id="total_correct"></span></p>
+<button class="webex_submit">
+Reveal Answers
+</button>
+</form>
+<p>You can send your form to an external script to save the data to a server. <a href="https://exp.psy.gla.ac.uk/webex" class="uri">https://exp.psy.gla.ac.uk/webex</a> is a demo page that just sisplays the received answers.</p>
+<form action="https://exp.psy.gla.ac.uk/webex" class="webex_form hide_answers remote" method="post">
+<ul>
+<li>What is your 4-digit ID number? <input name="ID" class=" nospaces  " data-tol="0" size="4" data-answer></input></li>
+<li>Type a consonant: <input name="consonant" class=" nospaces  " data-tol="0" size="1" data-answer></input></li>
+<li>Did this work? <select class="solveme" name="did it work" data-answer="[&quot;TRUE&quot;]"> <option></option> <option>TRUE</option> <option>FALSE</option></select></li>
+<li><span class="cb"><input type="checkbox" class="solveme" id="check_yes" name="check_yes" data-answer="[&quot;TRUE&quot;]"> <label for="check_yes">Check this</label> <button>Reveal Answers</button></span></li>
+<li><span class="cb"><input type="checkbox" class="solveme correct" id="check_no" name="check_no" data-answer="[&quot;FALSE&quot;]"> <label for="check_no">Do not check this</label> <button>Reveal Answers</button></span></li>
+</ul>
 <button class="webex_submit">
 Submit
 </button>
@@ -452,15 +538,55 @@ Reveal Answers
 </button>
 </ul>
 <p>Single item checkboxes each get their own reveal</p>
-<p><span class="cb"><input type="checkbox" class="solveme" id="q_14" name="q_14" data-answer="[&quot;TRUE&quot;]"> <label for="q_14">Check this</label> <button>Reveal Answers</button></span></p>
-<p><span class="cb"><input type="checkbox" class="solveme correct" id="q_15" name="q_15" data-answer="[&quot;FALSE&quot;]"> <label for="q_15">Do not check this</label> <button>Reveal Answers</button></span></p>
+<p><span class="cb"><input type="checkbox" class="solveme" id="q_19" name="q_19" data-answer="[&quot;TRUE&quot;]"> <label for="q_19">Check this</label> <button>Reveal Answers</button></span></p>
+<p><span class="cb"><input type="checkbox" class="solveme correct" id="q_20" name="q_20" data-answer="[&quot;FALSE&quot;]"> <label for="q_20">Do not check this</label> <button>Reveal Answers</button></span></p>
+</div>
+<div id="buttons-styles" class="section level2">
+<h2>Buttons Styles</h2>
+<div class="solution">
+<button class="red">
+(RED)
+</button>
+<p>See the documentation for <code>plot()</code> (<code>?plot</code>)</p>
+</div>
+<div class="solution">
+<button class="orange">
+(ORANGE)
+</button>
+<p>See the documentation for <code>plot()</code> (<code>?plot</code>)</p>
+</div>
+<div class="solution">
+<button class="yellow">
+(YELLOW)
+</button>
+<p>See the documentation for <code>plot()</code> (<code>?plot</code>)</p>
+</div>
+<div class="solution">
+<button class="green">
+(GREEN)
+</button>
+<p>See the documentation for <code>plot()</code> (<code>?plot</code>)</p>
+</div>
+<div class="solution">
+<button class="blue">
+(BLUE)
+</button>
+<p>See the documentation for <code>plot()</code> (<code>?plot</code>)</p>
+</div>
+<div class="solution">
+<button class="purple">
+(PURPLE)
+</button>
+<p>See the documentation for <code>plot()</code> (<code>?plot</code>)</p>
+</div>
 </div>
 
 <script>
 
 /* submit form */
 $('form.webex_form').on('submit', function( event ) {
-  event.preventDefault();
+  if ($(this).hasClass("local")) { event.preventDefault(); }
+  
   $(this).removeClass("hide_answers");
   $(this).find(".cb").addClass("reveal").find('.solveme').change();
   console.log( $(this).serialize() );

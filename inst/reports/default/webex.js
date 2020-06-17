@@ -2,7 +2,8 @@
 
 /* submit form */
 $('form.webex_form').on('submit', function( event ) {
-  event.preventDefault();
+  if ($(this).hasClass("local")) { event.preventDefault(); }
+  
   $(this).removeClass("hide_answers");
   $(this).find(".cb").addClass("reveal").find('.solveme').change();
   console.log( $(this).serialize() );

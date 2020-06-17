@@ -6,7 +6,8 @@
 #' @export
 #'
 form_start <- function(url = "") {
-  paste0("<form action='", url, "' class='webex_form hide_answers' method='post'>\n")
+  sprintf("<form action='%s' class='webex_form hide_answers %s' method='post'>\n",
+         url, ifelse(url == "", "local", "remote"))
 }
 
 #' End a form

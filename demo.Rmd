@@ -22,6 +22,18 @@ output: webex::webex_default
 
 `r total_correct()`
 
+`r form_end("Reveal Answers")`
+
+You can send your form to an external script to save the data to a server. https://exp.psy.gla.ac.uk/webex is a demo page that just sisplays the received answers.
+
+`r form_start(url="https://exp.psy.gla.ac.uk/webex")`
+
+- What is your 4-digit ID number? `r fitb(width = 4, name = "ID")`
+- Type a consonant: `r fitb(width = 1, name = "consonant")`
+- Did this work? `r torf(TRUE, "did it work")`
+- `r checkbox("Check this" = TRUE, name = "check_yes")`
+- `r checkbox("Do not check this" = FALSE, name = "check_no")`
+
 `r form_end()`
 
 
@@ -38,5 +50,31 @@ Single item checkboxes each get their own reveal
 `r checkbox("Check this" = TRUE)`
 
 `r checkbox("Do not check this" = FALSE)`
+
+## Buttons Styles
+
+`r hide("(RED)", "red")`
+See the documentation for `plot()` (`?plot`)
+`r unhide()`
+
+`r hide("(ORANGE)", "orange")`
+See the documentation for `plot()` (`?plot`)
+`r unhide()`
+
+`r hide("(YELLOW)", "yellow")`
+See the documentation for `plot()` (`?plot`)
+`r unhide()`
+
+`r hide("(GREEN)", "green")`
+See the documentation for `plot()` (`?plot`)
+`r unhide()`
+
+`r hide("(BLUE)", "blue")`
+See the documentation for `plot()` (`?plot`)
+`r unhide()`
+
+`r hide("(PURPLE)", "purple")`
+See the documentation for `plot()` (`?plot`)
+`r unhide()`
 
 
