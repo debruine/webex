@@ -1,8 +1,14 @@
 /* styles for solveme */
-.solveme { border: 2px dotted red; }
-.solveme.correct { border: 2px solid blue; }
+.solveme, .reveal .solveme + label 
+    { border: 2px dotted red; }
+.solveme.correct,
+.reveal .solveme.correct + label
+    { border: 2px solid blue; }
 form.webex_form.hide_answers .solveme,
-form.webex_form.hide_answers .solveme.correct { border: 2px solid grey; }
+form.webex_form.hide_answers .solveme.correct,
+form.webex_form.hide_answers .solveme + label,
+form.webex_form.hide_answers .solveme.correct + label
+    { border: 2px solid grey; }
 
 /* styles for hidden solutions */
 .solution {
@@ -23,6 +29,11 @@ form.webex_form.hide_answers .solveme.correct { border: 2px solid grey; }
     border-color: green;
 }
 
-form.webex_form.hide_answers #total_correct {
+ul.cb {
+    list-style-type: none;
+}
+
+form.webex_form.hide_answers #total_correct,
+form.webex_form .cb > button {
     display: none;
 }

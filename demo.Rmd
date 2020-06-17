@@ -17,8 +17,26 @@ output: webex::webex_default
 - Type a vowel: `r fitb(c("A", "E", "I", "O" , "U"), ignore_case = TRUE, name = "vowel")`
 - True  `r torf(TRUE)`
 - False `r torf(FALSE)`
+- `r checkbox("I like R" = TRUE)`
+- Which of the following are true? `r checkbox("The filter function allows you to choose rows" = TRUE, "The select function allows you to choose rows" = FALSE, "5 %% 2 == 1" = TRUE, name = "demo_cb")`
 
 `r total_correct()`
 
 `r form_end()`
+
+
+## Checkboxes
+
+Checkboxes outside of a form get a Reveal/Hide Answers button.
+
+Which of the following are true?
+
+`r checkbox("The filter function allows you to choose rows" = TRUE, "The select function allows you to choose rows" = FALSE, "5 %% 2 == 1" = TRUE, name = "demo_cb2")`
+
+Single item checkboxes each get their own reveal
+
+`r checkbox("Check this" = TRUE)`
+
+`r checkbox("Do not check this" = FALSE)`
+
 

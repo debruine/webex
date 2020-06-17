@@ -254,10 +254,15 @@ h6 {
 </style>
 
 <style type="text/css">
-.solveme { border: 2px dotted red; }
-.solveme.correct { border: 2px solid blue; }
+.solveme, .reveal .solveme + label { border: 2px dotted red; }
+.solveme.correct,
+.reveal .solveme.correct + label
+{ border: 2px solid blue; }
 form.webex_form.hide_answers .solveme,
-form.webex_form.hide_answers .solveme.correct { border: 2px solid grey; }
+form.webex_form.hide_answers .solveme.correct,
+form.webex_form.hide_answers .solveme + label,
+form.webex_form.hide_answers .solveme.correct + label
+{ border: 2px solid grey; }
 
 .solution {
 height: 2.5em;
@@ -276,7 +281,11 @@ margin-bottom: 0.5em;
 .solution pre.sourceCode {
 border-color: green;
 }
-form.webex_form.hide_answers #total_correct {
+ul.cb {
+list-style-type: none;
+}
+form.webex_form.hide_answers #total_correct,
+form.webex_form .cb > button {
 display: none;
 }
 </style>
@@ -400,13 +409,51 @@ summary {
 <li>True or False? You can permute values in a vector using <code>sample()</code>. <select class="solveme" name="t1" data-answer="[&quot;TRUE&quot;]"> <option></option> <option>TRUE</option> <option>FALSE</option></select></li>
 <li>Type a vowel: <input name="vowel" class="solveme nospaces ignorecase" size="1" data-answer="[&quot;A&quot;,&quot;E&quot;,&quot;I&quot;,&quot;O&quot;,&quot;U&quot;]"></input></li>
 <li>True <select class="solveme" name="q_3" data-answer="[&quot;TRUE&quot;]"> <option></option> <option>TRUE</option> <option>FALSE</option></select></li>
-<li>False <select class="solveme" name="q_4" data-answer="[&quot;TRUE&quot;]"> <option></option> <option>TRUE</option> <option>FALSE</option></select></li>
+<li>False <select class="solveme" name="q_4" data-answer="[&quot;FALSE&quot;]"> <option></option> <option>TRUE</option> <option>FALSE</option></select></li>
+<li><p><span class="cb"><input type="checkbox" class="solveme" id="q_5" name="q_5" data-answer="[&quot;TRUE&quot;]"> <label for="q_5">I like R</label> <button>Reveal Answers</button></span></p></li>
+<li>Which of the following are true?
+<ul class="cb">
+<li>
+<input type="checkbox" class="solveme" id="demo_cb_1" name="demo_cb_1" data-answer="[&quot;TRUE&quot;]"> <label for="demo_cb_1">The filter function allows you to choose rows</label>
+</li>
+<li>
+<input type="checkbox" class="solveme correct" id="demo_cb_2" name="demo_cb_2" data-answer="[&quot;FALSE&quot;]"> <label for="demo_cb_2">The select function allows you to choose rows</label>
+</li>
+<li>
+<input type="checkbox" class="solveme" id="demo_cb_3" name="demo_cb_3" data-answer="[&quot;TRUE&quot;]"> <label for="demo_cb_3">5 %% 2 == 1</label>
+</li>
+<button>
+Reveal Answers
+</button>
+</ul></li>
 </ul>
 <p><span id="total_correct"></span></p>
 <button class="webex_submit">
 Submit
 </button>
 </form>
+</div>
+<div id="checkboxes" class="section level2">
+<h2>Checkboxes</h2>
+<p>Checkboxes outside of a form get a Reveal/Hide Answers button.</p>
+<p>Which of the following are true?</p>
+<ul class="cb">
+<li>
+<input type="checkbox" class="solveme" id="demo_cb2_1" name="demo_cb2_1" data-answer="[&quot;TRUE&quot;]"> <label for="demo_cb2_1">The filter function allows you to choose rows</label>
+</li>
+<li>
+<input type="checkbox" class="solveme correct" id="demo_cb2_2" name="demo_cb2_2" data-answer="[&quot;FALSE&quot;]"> <label for="demo_cb2_2">The select function allows you to choose rows</label>
+</li>
+<li>
+<input type="checkbox" class="solveme" id="demo_cb2_3" name="demo_cb2_3" data-answer="[&quot;TRUE&quot;]"> <label for="demo_cb2_3">5 %% 2 == 1</label>
+</li>
+<button>
+Reveal Answers
+</button>
+</ul>
+<p>Single item checkboxes each get their own reveal</p>
+<p><span class="cb"><input type="checkbox" class="solveme" id="q_14" name="q_14" data-answer="[&quot;TRUE&quot;]"> <label for="q_14">Check this</label> <button>Reveal Answers</button></span></p>
+<p><span class="cb"><input type="checkbox" class="solveme correct" id="q_15" name="q_15" data-answer="[&quot;FALSE&quot;]"> <label for="q_15">Do not check this</label> <button>Reveal Answers</button></span></p>
 </div>
 
 <script>
@@ -415,7 +462,22 @@ Submit
 $('form.webex_form').on('submit', function( event ) {
   event.preventDefault();
   $(this).removeClass("hide_answers");
+  $(this).find(".cb").addClass("reveal").find('.solveme').change();
   console.log( $(this).serialize() );
+});
+
+$(".cb button").click(function() {
+  var cb = $(this).parent(".cb");
+  // run change on all checkboxes to update solution in case of browser autofill
+  cb.find('.solveme').change();
+  
+  if (cb.hasClass("reveal")) {
+    cb.removeClass("reveal");
+    $(this).text("Reveal Answers");
+  } else {
+    cb.addClass("reveal");
+    $(this).text("Hide Answers");
+  }
 });
 
 /* update total correct if #total_correct exists */
@@ -441,6 +503,10 @@ b_func = function() {
 solveme_func = function(e) {
   var real_answers = JSON.parse(this.dataset.answer);
   var my_answer = this.value;
+  if (this.type && this.type === 'checkbox') {
+    my_answer = (this.checked) ? "TRUE" : "FALSE";
+  }
+  console.log(my_answer, real_answers);
   var cl = this.classList;
   if (cl.contains("ignorecase")) {
     my_answer = my_answer.toLowerCase();

@@ -15,7 +15,7 @@ form_start <- function(url = "") {
 #' @return
 #' @export
 form_end <- function(text = "Submit") {
-  paste0("<button class='webex_submit'>", text, "</button>\n</form>\n")
+  paste0("\n\n<button class='webex_submit'>", text, "</button>\n</form>\n")
 }
 
 make_name <- function(name) {

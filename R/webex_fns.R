@@ -103,6 +103,52 @@ torf <- function(answer, name = NULL) {
   mcq(opts, name) # just pass on name, don't call make_name
 }
 
+#' Create a set of checkboxes
+#'
+#' @param ... questions and answers in the format of "question text" = TRUE
+#' @param name The name to record if you are saving your answers with a script (a single name or list of names) 
+#'
+#' @return a string with HTML for the checkbox group
+#' @export
+#'
+#' @examples
+checkbox <- function(..., name = NULL) {
+  cb <- list(...)
+  n <- length(cb)
+  
+  # add numeric suffix if one name is supplied for several checkboxes
+  if (length(name) != n & n > 1) { 
+    name <- paste0(make_name(name[1]), "_", 1:n) 
+  }
+  
+  if (is.null(name)) {
+    # handles 1-item NULL name without making extra names
+    cbnames <- make_name(name) 
+  } else {
+    cbnames <- sapply(name, make_name)
+  }
+  
+  txt <- list()
+  for (i in 1:n) {
+    cbname <- cbnames[[i]]
+    cbanswer <- ifelse(cb[[i]], "TRUE", "FALSE")
+    cbanswer <- jsonlite::toJSON(as.character(cbanswer))
+    cbanswer <- gsub("\'", "&apos;", cbanswer, fixed = TRUE)
+    question <- names(cb)[[i]]
+    txt[i] <- sprintf("<input type='checkbox' class='solveme%s' id='%s' name='%s' data-answer='%s'> <label for='%s'>%s</label>",
+                      ifelse(cb[[i]], "", " correct"), # set false to correct by default
+                      cbname, cbname, cbanswer, cbname, question)
+  }
+  
+  if (length(txt) > 1) {
+    sprintf("<ul class='cb'>\n\t<li>%s</li>\n\t<button>Reveal Answers</button></ul>", paste(txt, collapse = "</li>\n\t<li>"))
+  } else {
+    sprintf("<span class='cb'>%s <button>Reveal Answers</button></span>\n", txt)
+  }
+}
+
+
+
 #' Create button revealing hidden content
 #'
 #' @param button_text Text to appear on the button that reveals the hidden content.

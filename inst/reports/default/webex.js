@@ -4,7 +4,22 @@
 $('form.webex_form').on('submit', function( event ) {
   event.preventDefault();
   $(this).removeClass("hide_answers");
+  $(this).find(".cb").addClass("reveal").find('.solveme').change();
   console.log( $(this).serialize() );
+});
+
+$(".cb button").click(function() {
+  var cb = $(this).parent(".cb");
+  // run change on all checkboxes to update solution in case of browser autofill
+  cb.find('.solveme').change();
+  
+  if (cb.hasClass("reveal")) {
+    cb.removeClass("reveal");
+    $(this).text("Reveal Answers");
+  } else {
+    cb.addClass("reveal");
+    $(this).text("Hide Answers");
+  }
 });
 
 /* update total correct if #total_correct exists */
@@ -30,6 +45,10 @@ b_func = function() {
 solveme_func = function(e) {
   var real_answers = JSON.parse(this.dataset.answer);
   var my_answer = this.value;
+  if (this.type && this.type === 'checkbox') {
+    my_answer = (this.checked) ? "TRUE" : "FALSE";
+  }
+  console.log(my_answer, real_answers);
   var cl = this.classList;
   if (cl.contains("ignorecase")) {
     my_answer = my_answer.toLowerCase();
